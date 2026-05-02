@@ -60,18 +60,21 @@ Answer questions helpfully and concisely about Emmanuel's work, capabilities, an
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-       model: 'claude-3-5-haiku-20241022',
+       model: 'claude-3-haiku-20240307',
         max_tokens: 400,
         system: SYSTEM_PROMPT,
         messages,
       }),
     });
 
-    if (!anthropicRes.ok) {
-      const err = await anthropicRes.text();
-      console.error('Anthropic error:', err);
-      return res.status(500).json({ error: 'AI service error' });
-    }
+   if (!anthropicRes.ok) {
+  const err = await anthropicRes.text();
+  console.error("Anthropic FULL ERROR:", err);
+  return res.status(500).json({
+    error: "AI service error",
+    details: err
+  });
+}
 
     const data = await anthropicRes.json();
     const reply = data?.content?.[0]?.text || "I'm having a moment — please email Emmanuel directly at emmanuelthompson@anchornovahq.com";
